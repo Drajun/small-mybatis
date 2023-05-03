@@ -12,5 +12,6 @@
 
 .idea/
 out/
+target/
 *.iml
 .gitignore
