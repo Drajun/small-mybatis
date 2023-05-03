@@ -1,0 +1,16 @@
+.class
+*.log
+
+*.ctxt
+
+*.jar
+*.war
+*.rar
+*.zip
+*.ear
+*.tar.gz
+
+.idea/
+out/
+*.iml
+.gitignore
