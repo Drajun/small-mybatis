@@ -1,5 +1,7 @@
 package cn.drajun.mybatis.binding;
 
+import cn.drajun.mybatis.session.SqlSession;
+
 import java.lang.reflect.Proxy;
 import java.util.Map;
 
@@ -15,8 +17,8 @@ public class MapperProxyFactory<T> {
         this.mapperInterface = mapperInterface;
     }
 
-    // 具体的代理操作
-    public T newInstance(Map<String, String> sqlSession){
+    // 新建具体的映射器代理类
+    public T newInstance(SqlSession sqlSession){
         MapperProxy<T> mapperProxy = new MapperProxy<>(sqlSession, mapperInterface);
         return (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), new Class[]{mapperInterface}, mapperProxy);
     }
