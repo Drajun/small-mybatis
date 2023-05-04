@@ -1,17 +1,16 @@
 package cn.drajun.mybatis.session.defaults;
 
 import cn.drajun.mybatis.binding.MapperRegistry;
+import cn.drajun.mybatis.mapping.MappedStatement;
+import cn.drajun.mybatis.session.Configuration;
 import cn.drajun.mybatis.session.SqlSession;
 
 public class DefaultSqlSession implements SqlSession {
 
-    /**
-     * 映射器注册机
-     */
-    private MapperRegistry mapperRegistry;
+    private Configuration configuration;
 
-    public DefaultSqlSession(MapperRegistry mapperRegistry){
-        this.mapperRegistry = mapperRegistry;
+    public DefaultSqlSession(Configuration  configuration){
+        this.configuration = configuration;
     }
 
     @Override
@@ -21,11 +20,17 @@ public class DefaultSqlSession implements SqlSession {
 
     @Override
     public <T> T selectOne(String statement, Object parameter) {
-        return (T) ("你的操作被代理了！方法：" + statement + " 参数：" + parameter);
+        MappedStatement mappedStatement = configuration.getMappedStatement(statement);
+        return (T) ("你的操作被代理了！\n方法：" + statement + "\n参数：" + parameter + "\nSQL："+mappedStatement.getSql());
     }
 
     @Override
     public <T> T getMapper(Class<T> type) {
-        return mapperRegistry.getMapper(type, this);
+        return configuration.getMapper(type, this);
+    }
+
+    @Override
+    public Configuration getConfiguration() {
+        return configuration;
     }
 }

@@ -1,5 +1,6 @@
 package cn.drajun.mybatis.binding;
 
+import cn.drajun.mybatis.session.Configuration;
 import cn.drajun.mybatis.session.SqlSession;
 import cn.hutool.core.lang.ClassScanner;
 
@@ -11,6 +12,11 @@ import java.util.Set;
  * 映射器注册机
  */
 public class MapperRegistry {
+
+    private Configuration configuration;
+    public MapperRegistry(Configuration config){
+        this.configuration = config;
+    }
 
     // 将已添加的映射器代理工厂加入到map中
     private final Map<Class<?>, MapperProxyFactory<?>> knownMappers = new HashMap<>();
