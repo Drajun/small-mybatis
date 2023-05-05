@@ -9,6 +9,7 @@ public class User {
     private String userHead;        // 头像
     private Date createTime;        // 创建时间
     private Date updateTime;        // 更新时间
+    private String userName;        // 用户名称
 
     public Long getId() {
         return id;
@@ -48,5 +49,13 @@ public class User {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

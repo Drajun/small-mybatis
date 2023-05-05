@@ -7,7 +7,7 @@ import java.io.Reader;
 
 /**
  * 构建SqlSessionFactory的工厂
- */
+ */ 
 public class SqlSessionFactoryBuilder {
 
     public SqlSessionFactory build(Reader reader){
