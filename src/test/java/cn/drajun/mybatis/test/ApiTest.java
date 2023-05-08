@@ -30,22 +30,6 @@ public class ApiTest {
     private Logger logger = LoggerFactory.getLogger(ApiTest.class);
 
     @Test
-    public void test_selectOne() throws IOException{
-        // 解析XML
-        Reader reader = Resources.getResourceAsReader("mybatis-config-datasource.xml");
-        XMLConfigBuilder xmlConfigBuilder = new XMLConfigBuilder(reader);
-        Configuration configuration = xmlConfigBuilder.parse();
-
-        // 获取DefaultSqlSession
-        SqlSession sqlSession = new DefaultSqlSession(configuration);
-
-        // 执行查询
-        Object[] req = {1L};
-        Object res = sqlSession.selectOne("cn.drajun.mybatis.test.dao.IUserDao.queryUserInfoById", req);
-        logger.info("测试结果：{}", JSON.toJSONString(res));
-    }
-
-    @Test
     public void test_pooled() throws SQLException, InterruptedException{
         PooledDataSource pooledDataSource = new PooledDataSource();
         pooledDataSource.setDriver("com.mysql.jdbc.Driver");
@@ -90,6 +74,17 @@ public class ApiTest {
         System.in.read();
         executorService.shutdown();
 
+    }
+
+    @Test
+    public void test_SqlSession() throws IOException{
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(Resources.getResourceAsReader("mybatis-config-datasource.xml"));
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        IUserDao userDao = sqlSession.getMapper(IUserDao.class);
+
+        User user = userDao.queryUserInfoById(1L);
+        logger.info("{}:测试结果:{}", Thread.currentThread().getName(), JSON.toJSONString(user));
     }
 
 
