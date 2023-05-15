@@ -36,6 +36,10 @@ public class ReflectionTest {
 
         // 设置属性值
         System.out.println("##### 设置属性值测试");
+        /**
+         * 通过name找到对应的set方法（name->setName()）
+         * 通过method类的invoke方法来执行设置属性值
+         */
         metaObject.setValue("name", "小白");
         logger.info("设置name的属性值：{}", metaObject.getValue("name"));
 
