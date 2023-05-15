@@ -1,7 +1,9 @@
 package cn.drajun.mybatis.mapping;
 
 import cn.drajun.mybatis.binding.MapperMethod;
+import cn.drajun.mybatis.scripting.LanguageDriver;
 import cn.drajun.mybatis.session.Configuration;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 import java.util.Map;
 
@@ -15,6 +17,7 @@ public class MappedStatement {
     private SqlCommandType sqlCommandType;
     private SqlSource sqlSource;
     Class<?> resultType;
+    private LanguageDriver lang;
 
     MappedStatement(){
 
@@ -30,6 +33,7 @@ public class MappedStatement {
             mappedStatement.sqlCommandType = sqlCommandType;
             mappedStatement.sqlSource = sqlSource;
             mappedStatement.resultType = resultType;
+            mappedStatement.lang = configuration.getDefaultScriptingLanguageInstance();
         }
 
         public MappedStatement build(){
@@ -57,5 +61,9 @@ public class MappedStatement {
 
     public Class<?> getResultType() {
         return resultType;
+    }
+
+    public LanguageDriver getLang(){
+        return lang;
     }
 }

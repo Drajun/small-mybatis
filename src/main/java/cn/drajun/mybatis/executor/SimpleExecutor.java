@@ -29,6 +29,7 @@ public class SimpleExecutor extends BaseExecutor{
             StatementHandler handler = configuration.newStatementHandler(this, ms, parameter, resultHandler, boundSql);
             Connection connection = transaction.getConnection();
             Statement stmt = handler.prepare(connection);
+            // 讲实际的参数放入预处理的SQL中
             handler.parameterize(stmt);
             return handler.query(stmt, resultHandler);
         }

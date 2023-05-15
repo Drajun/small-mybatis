@@ -10,4 +10,6 @@ public interface IUserDao {
 
     User queryUserInfoById(Long uId);
 
+    User queryUserInfo(User req);
+
 }

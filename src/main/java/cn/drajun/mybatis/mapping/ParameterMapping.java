@@ -2,6 +2,8 @@ package cn.drajun.mybatis.mapping;
 
 import cn.drajun.mybatis.session.Configuration;
 import cn.drajun.mybatis.type.JdbcType;
+import cn.drajun.mybatis.type.TypeHandler;
+import cn.drajun.mybatis.type.TypeHandlerRegistry;
 
 /**
  * 参数映射，java类型和数据库类型的对应
@@ -13,6 +15,7 @@ public class ParameterMapping {
     private String property;
     private Class<?> javaType = Object.class;
     private JdbcType jdbcType;
+    private TypeHandler<?> typeHandler;
 
     private ParameterMapping(){
     }
@@ -37,6 +40,11 @@ public class ParameterMapping {
         }
 
         public ParameterMapping build(){
+            if(parameterMapping.typeHandler == null && parameterMapping.javaType != null){
+                Configuration configuration = parameterMapping.getConfiguration();
+                TypeHandlerRegistry typeHandlerRegistry = configuration.getTypeHandlerRegistry();
+                parameterMapping.typeHandler = typeHandlerRegistry.getTypeHandler(parameterMapping.javaType, parameterMapping.jdbcType);
+            }
             return parameterMapping;
         }
     }
@@ -55,5 +63,9 @@ public class ParameterMapping {
 
     public JdbcType getJdbcType() {
         return jdbcType;
+    }
+
+    public TypeHandler<?> getTypeHandler() {
+        return typeHandler;
     }
 }
