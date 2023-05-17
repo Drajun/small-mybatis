@@ -43,6 +43,7 @@ public class XMLMapperBuilder extends BaseBuilder {
         if(!configuration.isResourceLoaded(resource)){
             configurationElement(element);
             configuration.addLoadedResource(resource);
+            // 绑定映射器到namespace Mybatis 源码方法名 -> bindMapperForNamespace
             configuration.addMapper(Resources.classForName(builderAssistant.getCurrentNamespace()));
         }
     }
@@ -60,17 +61,23 @@ public class XMLMapperBuilder extends BaseBuilder {
         builderAssistant.setCurrentNamespace(namespace);
 
         // 配置增删改查语句
-        buildStatementFromContext(element.elements("select"));
+        buildStatementFromContext(element.elements("select"),
+                element.elements("insert"),
+                element.elements("update"),
+                element.elements("delete")
+        );
     }
 
     /**
      * 配置增删改查语句
-     * @param list
+     * @param lists
      */
-    private void buildStatementFromContext(List<Element> list){
-        for(Element element : list){
-            final XMLStatementBuilder statementParser = new XMLStatementBuilder(configuration, builderAssistant, element);
-            statementParser.parseStatementNode();
+    private void buildStatementFromContext(List<Element>... lists){
+        for(List<Element> list : lists){
+            for(Element element : list){
+                final XMLStatementBuilder statementParser = new XMLStatementBuilder(configuration, builderAssistant, element);
+                statementParser.parseStatementNode();
+            }
         }
     }
 }

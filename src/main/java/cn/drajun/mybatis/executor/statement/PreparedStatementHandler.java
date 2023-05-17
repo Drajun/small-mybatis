@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * 预处理语句处理器
+ * 设置参数，执行SQL语句
  */
 public class PreparedStatementHandler extends BaseStatementHandler{
 
@@ -30,6 +31,13 @@ public class PreparedStatementHandler extends BaseStatementHandler{
     @Override
     public void parameterize(Statement statement) throws SQLException {
         parameterHandler.setParameters((PreparedStatement) statement);
+    }
+
+    @Override
+    public int update(Statement statement) throws SQLException {
+        PreparedStatement ps = (PreparedStatement) statement;
+        ps.execute();
+        return ps.getUpdateCount();
     }
 
     @Override

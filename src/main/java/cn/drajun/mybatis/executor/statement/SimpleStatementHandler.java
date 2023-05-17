@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * 简单 语句处理器
+ * 执行SQL语句
  */
 public class SimpleStatementHandler extends BaseStatementHandler{
 
@@ -28,6 +29,13 @@ public class SimpleStatementHandler extends BaseStatementHandler{
     @Override
     public void parameterize(Statement statement) throws SQLException {
 
+    }
+
+    @Override
+    public int update(Statement statement) throws SQLException {
+        String sql = boundSql.getSql();
+        statement.execute(sql);
+        return statement.getUpdateCount();
     }
 
     @Override
