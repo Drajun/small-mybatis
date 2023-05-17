@@ -6,6 +6,7 @@ import cn.drajun.mybatis.mapping.BoundSql;
 import cn.drajun.mybatis.mapping.MappedStatement;
 import cn.drajun.mybatis.session.Configuration;
 import cn.drajun.mybatis.session.ResultHandler;
+import cn.drajun.mybatis.session.RowBounds;
 import cn.drajun.mybatis.transaction.Transaction;
 
 import java.sql.Connection;
@@ -23,10 +24,10 @@ public class SimpleExecutor extends BaseExecutor{
     }
 
     @Override
-    protected <E> List<E> doQuery(MappedStatement ms, Object parameter, ResultHandler resultHandler, BoundSql boundSql) {
+    protected <E> List<E> doQuery(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) {
         try{
             Configuration configuration = ms.getConfiguration();
-            StatementHandler handler = configuration.newStatementHandler(this, ms, parameter, resultHandler, boundSql);
+            StatementHandler handler = configuration.newStatementHandler(this, ms, parameter, rowBounds, resultHandler, boundSql);
             Connection connection = transaction.getConnection();
             Statement stmt = handler.prepare(connection);
             // 讲实际的参数放入预处理的SQL中
