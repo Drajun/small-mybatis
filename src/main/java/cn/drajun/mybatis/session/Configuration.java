@@ -14,6 +14,7 @@ import cn.drajun.mybatis.executor.statement.StatementHandler;
 import cn.drajun.mybatis.mapping.BoundSql;
 import cn.drajun.mybatis.mapping.Environment;
 import cn.drajun.mybatis.mapping.MappedStatement;
+import cn.drajun.mybatis.mapping.ResultMap;
 import cn.drajun.mybatis.reflection.MetaObject;
 import cn.drajun.mybatis.reflection.factory.DefaultObjectFactory;
 import cn.drajun.mybatis.reflection.factory.ObjectFactory;
@@ -53,6 +54,11 @@ public class Configuration {
      * key是接口中的方法名，value是sql的封装对象
      */
     protected final Map<String, MappedStatement> mappedStatements = new HashMap<>();
+
+    /**
+     * 结果映射，存在Map里
+     */
+    protected final Map<String, ResultMap> resultMaps = new HashMap<>();
 
     /**
      * 类型别名注册机
@@ -192,4 +198,13 @@ public class Configuration {
     public ObjectFactory getObjectFactory() {
         return objectFactory;
     }
+
+    public ResultMap getResultMap(String id){
+        return resultMaps.get(id);
+    }
+
+    public void addResultMap(ResultMap resultMap){
+        resultMaps.put(resultMap.getId(), resultMap);
+    }
+
 }

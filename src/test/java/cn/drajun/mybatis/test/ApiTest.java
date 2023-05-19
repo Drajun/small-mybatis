@@ -131,7 +131,7 @@ public class ApiTest {
         IUserDao userDao = sqlSession.getMapper(IUserDao.class);
 
         // 2. 测试验证
-        int count = userDao.updateUserInfo(new User(1L, "10001", "叮当猫"));
+        int count = userDao.updateUserInfo(new User(1L, "10001", "Drajun"));
         logger.info("测试结果：{}", count);
 
         // 3. 提交事务

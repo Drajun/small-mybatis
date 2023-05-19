@@ -1,9 +1,6 @@
 package cn.drajun.mybatis.builder;
 
-import cn.drajun.mybatis.mapping.MappedStatement;
-import cn.drajun.mybatis.mapping.ResultMap;
-import cn.drajun.mybatis.mapping.SqlCommandType;
-import cn.drajun.mybatis.mapping.SqlSource;
+import cn.drajun.mybatis.mapping.*;
 import cn.drajun.mybatis.scripting.LanguageDriver;
 import cn.drajun.mybatis.session.Configuration;
 
@@ -36,9 +33,15 @@ public class MapperBuilderAssistant extends BaseBuilder{
         if(base == null){
             return null;
         }
-        if(isReference){
-            if(base.contains("."))
+        if (isReference) {
+            if (base.contains(".")) return base;
+        } else {
+            if (base.startsWith(currentNamespace + ".")) {
                 return base;
+            }
+            if (base.contains(".")) {
+                throw new RuntimeException("Dots are not allowed in element names, please remove it from " + base);
+            }
         }
         return currentNamespace + "." + base;
     }
@@ -80,7 +83,10 @@ public class MapperBuilderAssistant extends BaseBuilder{
         resultMap = applyCurrentNamespace(resultMap, true);
         List<ResultMap> resultMaps = new ArrayList<>();
         if(resultMap != null){
-
+            String[] resultMapNames = resultMap.split(",");
+            for(String resultMapName : resultMapNames){
+                resultMaps.add(configuration.getResultMap(resultMapName.trim()));
+            }
         }
         else if(resultType != null){
             /*
@@ -92,6 +98,14 @@ public class MapperBuilderAssistant extends BaseBuilder{
             resultMaps.add(inlineResultMapBuilder.build());
         }
         statementBuilder.resultMaps(resultMaps);
+    }
+
+    public ResultMap addResultMap(String id, Class<?> type, List<ResultMapping> resultMappings){
+        ResultMap.Builder inlineResultMapBuilder = new ResultMap.Builder(configuration, id, type, resultMappings);
+
+        ResultMap resultMap = inlineResultMapBuilder.build();
+        configuration.addResultMap(resultMap);
+        return resultMap;
     }
 
 }

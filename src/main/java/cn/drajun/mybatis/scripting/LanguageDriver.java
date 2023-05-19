@@ -23,6 +23,11 @@ public interface LanguageDriver {
     SqlSource createSqlSource(Configuration configuration, Element script, Class<?> parameterType);
 
     /**
+     * 创建SQL源码(annotation 注解方式)
+     */
+    SqlSource createSqlSource(Configuration configuration, String script, Class<?> parameterType);
+
+    /**
      * 创建参数处理器
      * @param mappedStatement 映射语句类，描述一条SQL语句
      * @param parameterObject 参数
